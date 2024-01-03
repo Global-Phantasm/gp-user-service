@@ -18,13 +18,16 @@ publishing {
     }
     publications {
         gpr(MavenPublication) {
-            from(components.java)
+            from components.java
+            version = '1.0.0'
+            groupId = 'com.gp'
+            artifactId = 'pf.user.service'
         }
     }
 }
 
-group = 'com.gp.pf'
-version = '1.0.1-SNAPSHOT'
+group = 'com.gp'
+version = '1.0.0-SNAPSHOT'
 
 java {
 	sourceCompatibility = '17'
