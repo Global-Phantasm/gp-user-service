@@ -17,11 +17,12 @@ publishing {
         }
     }
     publications {
-        gpr(MavenPublication) {
-            from components.java
-            version = '1.0.0'
+        maven(MavenPublication) {
             groupId = 'com.gp'
             artifactId = 'pf.user.service'
+            version = '1.0.0'
+
+            from components.java
         }
     }
 }
