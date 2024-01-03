@@ -23,8 +23,8 @@ publishing {
     }
 }
 
-group = 'com.gp'
-version = '0.0.1-SNAPSHOT'
+group = 'com.gp.pf'
+version = '1.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = '17'
