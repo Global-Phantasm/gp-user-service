@@ -23,7 +23,7 @@ publishing {
     }
 }
 
-group = 'com.gp'
+group = 'com.gp.pf.user.service'
 version = '1.0.0-SNAPSHOT'
 
 java {
