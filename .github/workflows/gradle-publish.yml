@@ -45,24 +45,10 @@ jobs:
       with:
           arguments: test
           
-    - name: Comment on PR with coverage percentages and missing lines
-      run: |
-        COVERAGE=$(cat build/reports/jacoco/test/jacocoTestReport.csv | awk -F',' 'BEGIN {total=0; missed=0} {total+=1; if($4 == 0) missed+=1} END {print (total-missed)/total*100}')
-        BRANCHES=$(cat build/reports/jacoco/test/jacocoTestReport.csv | awk -F',' 'BEGIN {total=0; missed=0} {total+=1; if($4 == 0) missed+=1} END {print (total-missed)/total*100}')
-        NEWLINE=$'\n'
-   
-        # Print Missing Coverage Lines
-        echo "Missing Coverage Lines:"
-        echo "| Class | Method | Line |"
-        echo "|-------|--------|------|"
-        cat build/reports/jacoco/test/jacocoTestReport.csv | awk -F',' '{if($4 == 0) print "| " $2 " | " $3 " | " $5 " |"}'
-    
-        BODY="## JaCoCo Test Coverage Summary Statistics${NEWLINE}* __Coverage:__ ${COVERAGE}${NEWLINE}* __Branches:__ ${BRANCHES}${NEWLINE}"
-        echo "${BODY}"
-      continue-on-error: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+    - name: Generate JaCoCo Badge
+      uses: cicirello/jacoco-badge-generator@v2
+      with:
+        jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
 
     - name: Publish to GitHub Packages
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
