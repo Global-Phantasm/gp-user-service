@@ -32,12 +32,6 @@ jobs:
         server-id: github 
         settings-path: ${{ github.workspace }} 
 
-    - name: Checkout badges branch to a badges directory nested inside first checkout
-      uses: actions/checkout@v3
-      with:
-        ref: badges
-        path: badges
-
     - name: Make gradlew executable
       run: chmod +x ./gradlew
 
@@ -49,11 +43,23 @@ jobs:
     - name: Unit Test
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
       with:
-          arguments: "clean test jacocoTestReport"
-      env:
-         CODE_COVERAGE: true
+          arguments: test
+          
+    - name: Run Coverage
+      run: |
+        chmod +x gradlew
+        ./gradlew jacocoTestReport
 
-    
+    - name: Add coverage to PR
+      id: jacoco
+      uses: madrapps/jacoco-report@v1.6.1
+      with:
+        paths: |
+          ${{ github.workspace }}/**/build/reports/jacoco/prodNormalDebugCoverage/prodNormalDebugCoverage.xml,
+          ${{ github.workspace }}/**/build/reports/jacoco/**/debugCoverage.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
+        min-coverage-overall: 40
+        min-coverage-changed-files: 60
 
     - name: Publish to GitHub Packages
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
