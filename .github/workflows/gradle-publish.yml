@@ -47,11 +47,10 @@ jobs:
           
     - name: Comment on PR with coverage percentages and missing lines
       run: |
-        REPORT=$(<badges/coverage-summary.json)
-        COVERAGE=$(jq -r '.coverage' <<< "$REPORT")%
-        BRANCHES=$(jq -r '.branches' <<< "$REPORT")%
+        COVERAGE=$(cat build/reports/jacoco/test/jacocoTestReport.csv | awk -F',' 'BEGIN {total=0; missed=0} {total+=1; if($4 == 0) missed+=1} END {print (total-missed)/total*100}')
+        BRANCHES=$(cat build/reports/jacoco/test/jacocoTestReport.csv | awk -F',' 'BEGIN {total=0; missed=0} {total+=1; if($4 == 0) missed+=1} END {print (total-missed)/total*100}')
         NEWLINE=$'\n'
-    
+   
         # Print Missing Coverage Lines
         echo "Missing Coverage Lines:"
         echo "| Class | Method | Line |"
