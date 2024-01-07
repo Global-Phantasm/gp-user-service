@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @Testcontainers
 @AutoConfigureMockMvc
-@Slf4j
 class ApplicationTests {
 
 	@Container
@@ -48,17 +47,13 @@ class ApplicationTests {
 	void shouldCreateUser() throws Exception {
 		UserRequest userRequest = getUserRequest();
 		int initialSize = repository.findAll().size();
-		log.info("Initially there are {} records.",initialSize);
 		String requestString = mapper.writeValueAsString(userRequest);
 		mockMvc.perform(
 				MockMvcRequestBuilders.post("/api/user")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(requestString)
 		);
-		log.info("Create Request Completed");
 		Assertions.assertEquals(repository.findAll().size(),initialSize+1);
-		log.info("Read Request Completed");
-
 	}
 
 	private UserRequest getUserRequest() {
