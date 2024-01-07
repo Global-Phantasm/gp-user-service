@@ -13,12 +13,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gp.pf.user.service.dto.UserRequest;
 import com.gp.pf.user.service.repository.UserRepository;
-
-import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
 @Testcontainers
@@ -26,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 class ApplicationTests {
 
 	@Container
-	static MongoDBContainer container = new MongoDBContainer("mongo:latest");
+	static MongoDBContainer container = new MongoDBContainer(DockerImageName.parse("mongo:latest"));
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -40,7 +39,7 @@ class ApplicationTests {
 	
 	@DynamicPropertySource
 	static void setProperties(DynamicPropertyRegistry dynamicPropertyRegistry) {
-		dynamicPropertyRegistry.add("spring.data.mongodb.url", container::getReplicaSetUrl);
+		dynamicPropertyRegistry.add("spring.data.mongodb.url", () -> container.getReplicaSetUrl("embedded"));
 	}
 
 	@Test
