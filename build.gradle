@@ -37,9 +37,6 @@ configurations {
 	}
 }
 
-jacoco {
-    toolVersion = "0.8.7" 
-}
 
 repositories {
 	mavenCentral()
@@ -58,13 +55,22 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+jacoco {
+    toolVersion = "0.8.9"
+}
+
+jacocoTestReport {
+    dependsOn test 
+    reports {
+        xml.required = false
+        csv.required = true
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
-	jacoco {
-        enabled = true
-        includes = ['com/**']
-        excludes = ['com/exclude/**']
-    }
+	finalizedBy jacocoTestReport
 }
 tasks.named("bootJar") {
 	archiveClassifier = 'boot'
