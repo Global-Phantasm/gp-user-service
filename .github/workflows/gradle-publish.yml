@@ -58,7 +58,7 @@ jobs:
         cat build/reports/jacoco/test/jacocoTestReport.csv | awk -F',' '{if($4 == 0) print "| " $2 " | " $3 " | " $5 " |"}'
     
         BODY="## JaCoCo Test Coverage Summary Statistics${NEWLINE}* __Coverage:__ ${COVERAGE}${NEWLINE}* __Branches:__ ${BRANCHES}${NEWLINE}"
-        gh pr comment ${{github.event.pull_request.number}} -b "${BODY}"
+        echo "${BODY}"
       continue-on-error: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
