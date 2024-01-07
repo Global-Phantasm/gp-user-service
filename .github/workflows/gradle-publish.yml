@@ -42,6 +42,13 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:4.4.2
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.runCommand({ connectionStatus: 1 })'" --health-interval 10s --health-timeout 5s --health-retries 3
     permissions:
       contents: read
       packages: write
@@ -63,10 +70,19 @@ jobs:
     - name: Unit Test
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
       with:
-        arguments: test
+          arguments: "clean test jacocoTestReport"
+      env:
+         CODE_COVERAGE: true
 
   publish:
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:4.4.2
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.runCommand({ connectionStatus: 1 })'" --health-interval 10s --health-timeout 5s --health-retries 3
     permissions:
       contents: read
       packages: write
