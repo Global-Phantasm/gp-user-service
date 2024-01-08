@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gp.pf.user.service.UserService;
 import com.gp.pf.user.service.dto.UserRequest;
 import com.gp.pf.user.service.dto.UserResponse;
-import com.gp.pf.user.service.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 

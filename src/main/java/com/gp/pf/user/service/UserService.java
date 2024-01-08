@@ -1,4 +1,4 @@
-package com.gp.pf.user.service.service;
+package com.gp.pf.user.service;
 
 import java.util.List;
 
